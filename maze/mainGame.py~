@@ -1,0 +1,286 @@
+import sys
+import tkinter as tk
+import tkinter.filedialog as fl
+import tkinter.messagebox as mb
+#from PIL import Image, ImageTk
+from tkinter import font
+#from mutagen.mp3 import MP3 as mp3
+import time
+import pygame
+import character
+
+#ステージ
+FLOOR = "image/floor_stage.png"
+STONE = "image/stone.png"
+COIN = "image/coin.png"
+WALL = "image/takenoko.png"
+
+#主人公
+CH1 = "image/111.png"
+CH2 = "image/222.png"
+CH3 = "image/333.png"
+CH4 = "image/101010.png"
+CH5 = "image/111111.png"
+CH6 = "image/1212.png"
+CH7 = "image/777.png"
+CH8 = "image/888.png"
+CH9 = "image/999.png"
+CH10 = "image/444.png"
+CH11 = "image/555.png"
+CH12 = "image/666.png"
+
+#敵
+E1 = "image/1.png"
+E2 = "image/2.png"
+E3 = "image/3.png"
+E4 = "image/10.png"
+E5 = "image/11.png"
+E6 = "image/12.png"
+E7 = "image/7.png"
+E8 = "image/8.png"
+E9 = "image/9.png"
+E10 = "image/4.png"
+E11 = "image/5.png"
+E12 = "image/6.png"
+
+#タイトル
+
+
+score = 0
+coin = 0
+time = 0
+time1 = 0
+#CH = "image/111.png"#主人公の画像
+
+
+
+class mainGame(tk.Frame):
+    
+    def __init__(self,master):
+        super().__init__(master)
+        self.pack()
+        '''
+        self.time_sta = time.time()#制限時間の処理
+        for i in range(0,100000):
+            i ** 10
+        self.time_end = time.time()
+        self.elapsed_time = self.time_end - self.time_sta
+        '''
+        
+        
+        a = character.map_data
+        self.map_data = a
+        self.master.bind("<KeyPress>", character.key_down)
+        self.master.bind("<KeyRelease>", character.key_up)
+        character.setstage()
+        #character.set_chara_pos()
+        character.set_chara()
+        character.set_enemyA()
+        character.set_enemyB()
+        self.createWidgets()
+        
+    def createWidgets(self):
+        
+        
+        #self.time.sleep()
+        self.canvas = tk.Canvas(width = 720,height = 540)
+        #self.canvas.pack()
+        #self.master.mainloop()
+        self.img_bg = [
+            tk.PhotoImage(file = STONE),
+            tk.PhotoImage(file = STONE),
+            tk.PhotoImage(file = FLOOR),
+            tk.PhotoImage(file = COIN)
+            ]
+        
+        self.img_ch = [
+            tk.PhotoImage(file=CH1),
+                      tk.PhotoImage(file=CH2),
+                       tk.PhotoImage(file=CH3),
+                       tk.PhotoImage(file=CH4),
+                       tk.PhotoImage(file=CH5),
+                       tk.PhotoImage(file=CH6),
+                       tk.PhotoImage(file=CH7),
+                       tk.PhotoImage(file=CH8),
+                       tk.PhotoImage(file=CH9),
+                       tk.PhotoImage(file=CH10),
+                       tk.PhotoImage(file=CH11),
+                       tk.PhotoImage(file=CH12)
+                       ]
+        
+        self.img_enemy = [
+            tk.PhotoImage(file=E1),
+            tk.PhotoImage(file=E2),
+            tk.PhotoImage(file=E3),
+            tk.PhotoImage(file=E4),
+            tk.PhotoImage(file=E5),
+            tk.PhotoImage(file=E6),
+            tk.PhotoImage(file=E7),
+            tk.PhotoImage(file=E8),
+            tk.PhotoImage(file=E9),
+            tk.PhotoImage(file=E10),
+            tk.PhotoImage(file=E11),
+            tk.PhotoImage(file=E12),
+            ]
+        
+        self.img_title = tk.PhotoImage(file="image/title.png")
+        
+        #ビーム
+        self.img_gun = [
+            tk.PhotoImage(file = "image/gun.png"),
+            tk.PhotoImage(file = "image/gun.png"),
+            tk.PhotoImage(file = "image/gun.png")
+            ]
+        
+        self.canvas.pack()               
+        self.main_game()
+        
+        #self.master.mainloop()
+        
+        
+    def draw_txt(self,txt, x, y, siz, col): # 影付き文字
+    #print(score)
+    #canvas = tk.Canvas(width = 720,height = 540)
+    #canvas.pack()
+        fnt = ("Times New Roman", siz, "bold")
+        self.canvas.create_text(x+2, y+2, text=txt, fill="black", font=fnt, tag="SCREEN")
+        self.canvas.create_text(x, y, text=txt, fill=col, font=fnt, tag="SCREEN")
+        
+    def draw_screen(self):
+        #global tag_enemy
+        self.canvas.delete("SCREEN")
+        for y in range(9):
+            for x in range(12):
+                self.canvas.create_image(x * 60 + 30,y * 60 + 30,image = self.img_bg[self.map_data[y][x]],tag = "SCREEN")
+            #ch_class = character.main()        
+        self.canvas.create_image(character.ch_x, character.ch_y, image=self.img_ch[character.ch_a], tag="SCREEN")#主人公
+        if character.tag_enemy == False:
+            self.canvas.create_image(character.ex,character.ey,image = self.img_enemy[character.ea],tag = "SCREEN")#敵キャラ
+             
+        
+        if character.key == "space":
+            #character.set_fire()
+            character. move_missible()    
+            self.canvas.create_image(character.gx,character.gy,image = self.img_gun[character.ga],tag = "SCREEN")#ビーム
+        #character.set_fire()    
+        #炎を履く時は、見えて、儚い時は見えない位置に置く。
+
+        global time1
+        #j = 0
+        if character.tag_enemy2 == False:
+            if time1 > 3:
+                self.canvas.create_image(character.bx,character.b_y,image = self.img_enemy[character.ba],tag = "SCREEN")#敵キャラ
+            
+        self.draw_txt("制限時間 " + str(time1) + "/180",600,20,20,"red")#制限時間
+        #print(textUI.score)
+        self.draw_txt("獲得メダル "+str(score) + "枚", 200, 30, 30, "red")
+        
+    
+        
+        
+
+        
+        
+    def main_game(self):
+        
+        character.tmr = character.tmr + 1
+        
+        '''
+        self.time_sta = time.time()#制限時間の処理
+        for i in range(0,100000):
+            i ** 10
+        self.time_end = time.time()
+        self.elapsed_time = self.time_end - self.time_sta        
+        '''
+
+        
+        self.draw_screen()
+        
+        if character.idx == 0:
+            self.canvas.create_image(360,200,image = self.img_title,tag = "SCREEN")
+            if character.tmr % 10 < 5:
+                self.draw_txt("Press SPACE!",360,380,30,"yellow")
+            if character.key == "space":
+                character.score = 0
+                character.setstage()
+                character.set_chara()
+                character.set_enemyA()
+                character.set_enemyB()
+                #character.set_chara_pos()
+                character.idx = 1
+        
+        if character.idx == 1:#ゲームプレイ画面
+            
+
+            
+            #制限時間起動
+            global time,time1
+            time = time + 10
+            time1 = int(time/100)            
+                            
+            character.move_ch()
+            character.move_enemy(0)
+            
+            #timing_time = [3,15,30,60,80,100]
+            if time1 > 3:
+                character.move_enemy_B(0)
+            
+            
+            if time1 == 180:#制限時間
+                character.idx = 2
+            
+            if character.coin == 0:
+                character.idx = 4
+                character.tmr = 0
+                
+        if character.idx == 2:#敵にぶつかったときの当たり判定
+            self.draw_txt("GAMME OVER",360,270,40,"red")
+            if character.tmr == 50:
+                character.idx = 0
+                
+                
+        if character.idx == 3:
+            #global tag_enemy
+            #self.canvas.delete("ENEMY")
+            if character.h == 1:
+                character.tag_enemy = True
+                character.set_enemyA()
+            elif character.h == 2:
+                character.tag_enemy2 = True
+                character.set_enemyB()
+            #character.coin += 5
+            #character.set_chara_pos()
+            #character.tag_enemy = False
+            #character.tag_enemy2 = False
+            #character.setstage()
+            character.idx = 1
+        
+                
+        if character.idx == 4:#メダルすべて回収
+            self.draw_txt("STAGE CLEAR",360,270,40,"pink")
+            if character.tmr == 50:
+                character.idx = 0
+            
+        #global key,koff
+        
+        if character.koff == True:
+            character.key = ""
+            character.koff = False
+        self.master.after(100, self.main_game)
+            
+        #chara = character()
+        #chara.main_ch()
+        #character.main()
+
+        
+
+        
+        
+def maingame():
+    master = tk.Tk()    
+    master.resizable(width=False, height=False)
+    start_game = mainGame(master)
+    start_game.mainloop()
+
+
+    
