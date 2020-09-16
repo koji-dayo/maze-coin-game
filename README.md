@@ -6,6 +6,7 @@
 pythonのフレームワークのTkinterで制作しました。プレイヤー操作は矢印キーで行います。またスペースキーを押すと炎が噴射し、敵を倒すことが出来ます。
 
 #実行結果
+
 起動時は以下の画面が表示されスタートボタンを押します。
 
 ![Start Menu](./img/start.png)
@@ -36,4 +37,5 @@ pythonのフレームワークのTkinterで制作しました。プレイヤー�
 #参考資料、素材
 
 http://etolier.webcrow.jp/material/menu.html
+
 http://yms.main.jp/page-s1/howtouse.html
