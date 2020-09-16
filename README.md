@@ -35,7 +35,7 @@ pythonのフレームワークのTkinterで制作しました。プレイヤー�
 しばらくするとリトライボタンが出てきて、リトライすることが出来ます。
 
 
-# 参考資料、素材
+# 素材
 
 http://etolier.webcrow.jp/material/menu.html
 
