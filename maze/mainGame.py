@@ -4,8 +4,8 @@ import tkinter.filedialog as fl
 import tkinter.messagebox as mb
 from tkinter import font
 import time
-import pygame
-from mutagen.mp3 import MP3 as mp3
+#import pygame
+#from mutagen.mp3 import MP3 as mp3
 import character
 import startMenu
 

@@ -1,8 +1,8 @@
 import tkinter as tk
 import random
 import mainGame
-import pygame
-from mutagen.mp3 import MP3 as mp3
+#import pygame
+#from mutagen.mp3 import MP3 as mp3
 ANIMATION = [0,1,0,2]
 tmr = 0
 
@@ -327,9 +327,9 @@ def move_ch():
     mx = int(ch_x/60)
     my = int(ch_y/60)
     if map_data[my][mx] == 3:
-        pygame.mixer.init()
-        pygame.mixer.music.load('BGM/coin.mp3')
-        pygame.mixer.music.play(1)
+        #pygame.mixer.init()
+        #pygame.mixer.music.load('BGM/coin.mp3')
+        #pygame.mixer.music.play(1)
         mainGame.score = mainGame.score + 1
         map_data[my][mx] = 2
         coin = coin - 1

@@ -6,8 +6,8 @@ import tkinter.filedialog as fl
 import tkinter.messagebox as mb
 from PIL import Image, ImageTk
 from tkinter import font
-from mutagen.mp3 import MP3 as mp3
-import pygame
+#from mutagen.mp3 import MP3 as mp3
+#import pygame
 import mainGame
 
 
@@ -20,9 +20,9 @@ class StartGame(tk.Frame):
         super().__init__(master)
         self.pack()
         
-        pygame.mixer.init()
-        pygame.mixer.music.load(BGM)
-        pygame.mixer.music.play(1)
+        #pygame.mixer.init()
+        #pygame.mixer.music.load(BGM)
+        #pygame.mixer.music.play(1)
         #========================
         #ウィンドウ生成(1000x700)
         #title:StartMenu
@@ -53,7 +53,7 @@ class StartGame(tk.Frame):
         self.btn.place(x = 250,y = 250)
         
     def newWindow(self):
-        pygame.mixer.music.stop() 
+        #pygame.mixer.music.stop() 
         mainGame.maingame(self.master)
         
         
